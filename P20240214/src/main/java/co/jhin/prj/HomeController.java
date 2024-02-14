@@ -18,16 +18,9 @@ public class HomeController {
 	@Autowired
 	private DataSource dataSource;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {
-		try {
-			Connection conn = dataSource.getConnection();
-			System.out.println("db connected");
-		} catch (Exception e) {
-			System.out.println("db connection failed");
-		}
-		
-		return "home";
+	@RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
+	public String home() {
+		return "home/home";
 	}
 	
 }
