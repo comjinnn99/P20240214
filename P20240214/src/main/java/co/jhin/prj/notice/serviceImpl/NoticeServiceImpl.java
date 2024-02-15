@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import co.jhin.prj.common.PageVO;
 import co.jhin.prj.notice.map.NoticeMapper;
 import co.jhin.prj.notice.service.NoticeService;
 import co.jhin.prj.notice.service.NoticeVO;
@@ -19,6 +20,11 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public List<NoticeVO> noticeSelectList() {
 		return map.noticeSelectList();
+	}
+	
+	@Override
+	public List<NoticeVO> noticeSelectList(int offset) {
+		return map.noticeSelectList(offset);
 	}
 
 	@Override
@@ -45,4 +51,10 @@ public class NoticeServiceImpl implements NoticeService {
 	public int noticeHitUpdate(NoticeVO vo) {
 		return map.noticeHitUpdate(vo);
 	}
+
+	@Override
+	public PageVO selectCount() {
+		return map.selectCount();
+	}
+
 }

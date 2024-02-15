@@ -52,7 +52,7 @@
 </article>
 <ul class="pagination justify-content-center mb-5">
   <li class="page-item">
-    <a class="page-link" href="javascript:void(0);">Previous</a>
+    <a class="page-link" href="javascript:void(0);" onclick="callFunction(${ p.firstPageNoOnPageList } - 1)">Previous</a>
   </li>
   <c:forEach var="index" begin="${ p.firstPageNoOnPageList }" end="${ p.lastPageNoOnPageList }" step="1">
     <li class="page-item">
@@ -60,7 +60,7 @@
     </li>
   </c:forEach>
   <li class="page-item">
-    <a class="page-link" href="javascript:void(0);">Next</a>
+    <a class="page-link" href="javascript:void(0);" onclick="callFunction(${ p.lastPageNoOnPageList } + 1)">Next</a>
   </li>
 </ul>
 
