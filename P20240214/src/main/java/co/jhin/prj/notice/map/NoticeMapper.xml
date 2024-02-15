@@ -4,25 +4,30 @@
   <select id="noticeSelectList">
     select * from dev_notice
     order by notice_id desc
+    <if test="offset != null">
+      limit #{offset}, 5
+    </if>
   </select>
-  
+
   <select id="noticeSelect">
     select * from dev_notice where notice_id = #{noticeId}
   </select>
-  
+
   <insert id="noticeInsert">
     <selectKey keyProperty="noticeId" order="BEFORE" resultType="int">
-      select 
-        case 
-          when max(notice_id) is null then 1
-          else max(notice_id) +1 
-        end
-      from dev_notice
+      select
+      case
+      when max(notice_id) is null then 1
+      else max(notice_id) +1
+      end
+      from
+      dev_notice
     </selectKey>
-    insert into dev_notice (notice_id, notice_writer, notice_title, notice_subject) 
-    values (#{noticeId}, #{noticeWriter}, #{noticeTitle}, #{noticeSubject})
+    insert into dev_notice (notice_id, notice_writer, notice_title, notice_subject)
+    values (#{noticeId}, #{noticeWriter}, #{noticeTitle},
+    #{noticeSubject})
   </insert>
-  
+
   <update id="noticeUpdate">
     update dev_notice
     <set>
@@ -38,14 +43,18 @@
     </set>
     where notice_id = #{noticeId}
   </update>
-  
+
   <delete id="noticeDelete">
     delete from dev_notice where notice_id = #{noticeId}
   </delete>
-  
+
   <update id="noticeHitUpdate">
     update dev_notice
     set notice_hit = notice_hit + 1
     where notice_id = #{noticeId}
   </update>
+
+  <select id="selectCount">
+    SELECT count(*) AS total_record_count FROM dev_notice
+  </select>
 </mapper>

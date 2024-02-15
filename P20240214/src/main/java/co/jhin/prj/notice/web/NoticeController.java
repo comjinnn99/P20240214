@@ -15,9 +15,35 @@ public class NoticeController {
 	@Autowired
 	private NoticeService ns;
 
-	@RequestMapping(value = "/noticelist", method = RequestMethod.GET)
+	@RequestMapping(value = "/noticelist", method = {RequestMethod.GET, RequestMethod.POST})
 	public String noticeSelectList(Model model, PageVO vo) {
 		model.addAttribute("notices", ns.noticeSelectList());
+		
+		int currentPageNo = vo.getCurrentPageNo(); // 페이지 초기화
+		if (currentPageNo != 0) {
+			currentPageNo = currentPageNo - 1;
+		} else {
+			currentPageNo = 0;
+		}
+		System.out.println(currentPageNo);
+		int recordCountPerPage = vo.getRecordCountPerPage(); // 한 페이지당 보여줄 게시글 개수
+		int pageSize = vo.getPageSize(); // [pre] 1 2 3 [next]
+		vo = ns.selectCount(); // 전체 게시글 건수를 sql에서 가져옴
+		int totalRecordCount = vo.getTotalRecordCount(); // 전체 게시물 건수
+		int totalPageCount = ((totalRecordCount - 1) / recordCountPerPage) + 1; // 총 페이지 수
+		int firstPage = ((currentPageNo) / pageSize) * pageSize + 1; // 페이지 리스트 시작 페이지
+		int lastPage = firstPage + pageSize - 1; // 페이지 리스트 마지막 페이지 번호
+
+		if (lastPage > totalPageCount) {
+			lastPage = totalPageCount;
+		}
+
+		vo.setFirstPageNoOnPageList(firstPage);
+		vo.setLastPageNoOnPageList(lastPage);
+
+		model.addAttribute("p", vo);
+		model.addAttribute("notices", ns.noticeSelectList(currentPageNo * recordCountPerPage));
+		
 		return "notice/noticelist";
 	}
 
